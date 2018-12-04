@@ -23,6 +23,7 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 		<java.version>1.8</java.version>
+		<runSuite>**/FsdSpringProjectTests.class</runSuite>
 	</properties>
 
 	<dependencies>
@@ -46,11 +47,8 @@
 		</dependency>
 
 		<!-- My OWn Dependencies -->
-		<!-- <dependency>
-			<groupId>org.springframework</groupId>
-			<artifactId>spring-test</artifactId>
-			<version>4.1.7.RELEASE</version>
-		</dependency> -->
+		<!-- <dependency> <groupId>org.springframework</groupId> <artifactId>spring-test</artifactId> 
+			<version>4.1.7.RELEASE</version> </dependency> -->
 
 		<dependency>
 			<groupId>mysql</groupId>
@@ -78,6 +76,48 @@
 
 	<build>
 		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-surefire-plugin</artifactId>
+				<version>2.7</version>
+				<configuration>
+					<includes>
+						<include>${runSuite}</include>
+					</includes>
+					<runOrder>failedfirst</runOrder>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.jacoco</groupId>
+				<artifactId>jacoco-maven-plugin</artifactId>
+				<version>0.8.2</version>
+				<configuration>
+					<excludes>
+					<!-- com.cts.fsd.controller -->
+						<exclude>com/cts/fsd/dto/*</exclude>
+						<exclude>com/cts/fsd/controller/*</exclude>
+						<exclude>com/cts/fsd/*.class</exclude>
+						<exclude>com/cts/fsd/entity/*</exclude>
+						<exclude>com/cts/fsd/mapper/*</exclude>
+						<exclude>com/cts/fsd/util/*</exclude>
+						<exclude>com/cts/fsd/exception/*</exclude>
+					</excludes>
+				</configuration>
+				<executions>
+					<execution>
+						<goals>
+							<goal>prepare-agent</goal>
+						</goals>
+					</execution>
+					<execution>
+						<id>report</id>
+						<phase>prepare-package</phase>
+						<goals>
+							<goal>report</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
